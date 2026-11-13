@@ -141,7 +141,27 @@
       border-radius: 20px;
       font-size: 12px;
     }
+.related-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
 
+.related-btn {
+  background: #251010;
+  border: 1px solid #8e2929;
+  color: #ff7777;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.related-btn:hover {
+  background: #8e2929;
+  color: white;
+  transform: translateY(-2px);
+}
     @media (max-width: 600px) {
       .panel {
         padding: 18px;
@@ -239,7 +259,54 @@ async function startGraph() {
 
     content.appendChild(section);
   }
+// RELATED NODE NAVIGATION
+function addRelatedConcepts(ids) {
 
+  if (!Array.isArray(ids) || ids.length === 0) return;
+
+  const section = document.createElement("section");
+  section.className = "section";
+
+  const heading = document.createElement("h3");
+  heading.textContent = "EXPLORE RELATED KNOWLEDGE";
+
+  const list = document.createElement("div");
+  list.className = "related-list";
+
+  ids.forEach(id => {
+
+    const target = data.nodes.find(item => item.id === id);
+
+    if (!target) return;
+
+    const button = document.createElement("button");
+    button.className = "related-btn";
+    button.textContent = target.name;
+
+    button.addEventListener("click", () => {
+
+      closeOverlay();
+
+      Graph.centerAt(
+        target.x || 0,
+        target.y || 0,
+        target.z || 0,
+        1000
+      );
+
+      Graph.zoom(5, 1000);
+
+      openOverlay(target);
+    });
+
+    list.appendChild(button);
+
+  });
+
+  section.appendChild(heading);
+  section.appendChild(list);
+  content.appendChild(section);
+}
   // OPEN OVERLAY
   function openOverlay(node) {
 
@@ -261,7 +328,7 @@ async function startGraph() {
     addSection("ANATOMY", deep.anatomy);
     addSection("FUNCTIONS", deep.functions);
     addSection("MECHANISMS", deep.mechanisms);
-    addSection("RELATED CONCEPTS", deep.relatedConcepts);
+    addRelatedConcepts(deep.relatedConcepts);
     addSection("REFERENCES", deep.references);
 
     // TAGS
