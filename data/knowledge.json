@@ -28,12 +28,12 @@
     "Long-Term Potentiation (LTP)",
     "Neural Network Encoding"
   ],
-  "relatedConcepts": [
-    "Memory",
-    "Learning",
-    "Neurons",
-    "Synapse"
-  ]
+"relatedConcepts": [
+  "memory",
+  "learning",
+  "neuron",
+  "synapse"
+]
 }
 },
     {
