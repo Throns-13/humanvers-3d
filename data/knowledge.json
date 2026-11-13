@@ -8,7 +8,34 @@
       "description": "โครงสร้างสมองที่มีบทบาทสำคัญต่อความทรงจำ",
       "details": "Hippocampus เป็นโครงสร้างในสมองส่วน medial temporal lobe มีบทบาทสำคัญในการสร้างและจัดระเบียบความทรงจำเชิงเหตุการณ์และเชิงพื้นที่ รวมถึงการทำให้ความทรงจำระยะสั้นบางส่วนคงตัวเป็นความทรงจำระยะยาว",
       "tags": ["Hippocampus", "Memory", "Neuroscience", "Learning"]
-    },
+    
+"deepData": {
+  "overview": "Hippocampus เป็นโครงสร้างสมองใน medial temporal lobe มีบทบาทสำคัญต่อการสร้างความทรงจำ",
+  "anatomy": [
+    "Dentate Gyrus",
+    "CA1",
+    "CA2",
+    "CA3",
+    "Subiculum"
+  ],
+  "functions": [
+    "การสร้างความทรงจำเชิงเหตุการณ์",
+    "การเรียนรู้เชิงพื้นที่",
+    "การจัดระเบียบความทรงจำ"
+  ],
+  "mechanisms": [
+    "Synaptic Plasticity",
+    "Long-Term Potentiation (LTP)",
+    "Neural Network Encoding"
+  ],
+  "relatedConcepts": [
+    "Memory",
+    "Learning",
+    "Neurons",
+    "Synapse"
+  ]
+}
+},
     {
       "id": "memory_consolidation",
       "name": "การทำให้ความทรงจำคงตัว",
