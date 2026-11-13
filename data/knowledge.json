@@ -1,35 +1,23 @@
-
 {
   "nodes": [
-    
-{
-  "id": "hippocampus",
-  "name": "ฮิปโปแคมปัส",
-  "group": "Neuroscience",
-  "category": "โครงสร้างสมอง",
-  "description": "โครงสร้างสมองที่มีบทบาทสำคัญต่อความทรงจำ",
-  "details": "Hippocampus เป็นโครงสร้างในสมองส่วน medial temporal lobe มีบทบาทสำคัญในการสร้างและจัดระเบียบความทรงจำเชิงเหตุการณ์และเชิงพื้นที่ รวมถึงการทำให้ความทรงจำระยะสั้นบางส่วนคงตัวเป็นความทรงจำระยะยาว",
-  "tags": [
-    "Hippocampus",
-    "Memory",
-    "Neuroscience",
-    "Learning"
-  ]
-},
-{
-  "id": "memory_consolidation",
-  "name": "การทำให้ความทรงจำคงตัว",
-  "group": "Neuroscience",
-  "category": "กระบวนการทางสมอง",
-  "description": "กระบวนการที่ทำให้ความทรงจำมีความคงทนมากขึ้น",
-  "details": "Memory Consolidation คือกระบวนการที่ความทรงจำถูกทำให้มีความเสถียรมากขึ้น เกี่ยวข้องกับการเปลี่ยนแปลงระดับไซแนปส์และการทำงานร่วมกันของเครือข่ายสมอง",
-  "tags": [
-    "Memory",
-    "Consolidation",
-    "Neuroscience"
-  ]
-}
-
+    {
+      "id": "hippocampus",
+      "name": "ฮิปโปแคมปัส",
+      "group": "Neuroscience",
+      "category": "โครงสร้างสมอง",
+      "description": "โครงสร้างสมองที่มีบทบาทสำคัญต่อความทรงจำ",
+      "details": "Hippocampus เป็นโครงสร้างในสมองส่วน medial temporal lobe มีบทบาทสำคัญในการสร้างและจัดระเบียบความทรงจำเชิงเหตุการณ์และเชิงพื้นที่ รวมถึงการทำให้ความทรงจำระยะสั้นบางส่วนคงตัวเป็นความทรงจำระยะยาว",
+      "tags": ["Hippocampus", "Memory", "Neuroscience", "Learning"]
+    },
+    {
+      "id": "memory_consolidation",
+      "name": "การทำให้ความทรงจำคงตัว",
+      "group": "Neuroscience",
+      "category": "กระบวนการทางสมอง",
+      "description": "กระบวนการที่ทำให้ความทรงจำมีความคงทนมากขึ้น",
+      "details": "Memory Consolidation คือกระบวนการที่ความทรงจำถูกทำให้มีความเสถียรมากขึ้น เกี่ยวข้องกับการเปลี่ยนแปลงระดับไซแนปส์และการทำงานร่วมกันของเครือข่ายสมอง",
+      "tags": ["Memory", "Consolidation", "Neuroscience"]
+    },
     {
       "id": "brain",
       "name": "สมอง",
@@ -77,28 +65,26 @@
     }
   ],
   "links": [
-    
-{
-  "source": "brain",
-  "target": "hippocampus",
-  "relation": "มีโครงสร้างเป็นส่วนหนึ่ง"
-},
-{
-  "source": "hippocampus",
-  "target": "memory",
-  "relation": "มีบทบาทในการสร้างความทรงจำ"
-},
-{
-  "source": "memory",
-  "target": "memory_consolidation",
-  "relation": "ผ่านกระบวนการ"
-},
-{
-  "source": "hippocampus",
-  "target": "memory_consolidation",
-  "relation": "มีส่วนเกี่ยวข้องกับ"
-}
-
+    {
+      "source": "brain",
+      "target": "hippocampus",
+      "relation": "มีโครงสร้างเป็นส่วนหนึ่ง"
+    },
+    {
+      "source": "hippocampus",
+      "target": "memory",
+      "relation": "มีบทบาทในการสร้างความทรงจำ"
+    },
+    {
+      "source": "memory",
+      "target": "memory_consolidation",
+      "relation": "ผ่านกระบวนการ"
+    },
+    {
+      "source": "hippocampus",
+      "target": "memory_consolidation",
+      "relation": "มีส่วนเกี่ยวข้องกับ"
+    },
     {
       "source": "brain",
       "target": "neuron",
