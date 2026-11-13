@@ -122,24 +122,6 @@ startGraph().catch(error => {
 });
 
 
-  const Graph = ForceGraph3D()
-    (document.getElementById("graph"))
-    .graphData(data)
-    .backgroundColor("#080808")
-    .nodeLabel("name")
-    .nodeAutoColorBy("group")
-    .nodeVal(5)
-    .linkColor(() => "#8e2929")
-    .linkWidth(1.5)
-    .onNodeClick(node => {
-      document.getElementById("title").textContent =
-        node.name;
-
-      document.getElementById("description").textContent =
-        node.description;
-    });
-
-  Graph.d3Force("charge").strength(-100);
 </script>
 
 </body>
