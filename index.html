@@ -1,0 +1,137 @@
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HUMANVERSE 3D</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/3d-force-graph"></script>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: #080808;
+      color: white;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    header {
+      position: absolute;
+      z-index: 2;
+      top: 20px;
+      left: 25px;
+    }
+
+    h1 {
+      color: #ff3030;
+      letter-spacing: 3px;
+    }
+
+    #graph {
+      width: 100vw;
+      height: 100vh;
+    }
+
+    #info {
+      position: absolute;
+      z-index: 2;
+      right: 20px;
+      bottom: 20px;
+      width: 270px;
+      padding: 18px;
+      background: rgba(20, 10, 10, 0.92);
+      border: 1px solid #9e2525;
+      border-radius: 12px;
+    }
+
+    #info h2 { color: #ff4545; }
+    #info p { line-height: 1.6; }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>HUMANVERSE</h1>
+  <p>3D KNOWLEDGE UNIVERSE</p>
+</header>
+
+<div id="graph"></div>
+
+<div id="info">
+  <h2 id="title">Knowledge Node</h2>
+  <p id="description">
+    คลิกจุดความรู้เพื่อดูรายละเอียด
+  </p>
+</div>
+
+<script>
+  const data = {
+    nodes: [
+      {
+        id: "brain",
+        name: "สมอง",
+        group: "Biology",
+        description: "ศูนย์กลางการประมวลผลของระบบประสาท"
+      },
+      {
+        id: "neuron",
+        name: "เซลล์ประสาท",
+        group: "Biology",
+        description: "เซลล์ที่ทำหน้าที่รับและส่งสัญญาณประสาท"
+      },
+      {
+        id: "memory",
+        name: "ความทรงจำ",
+        group: "Psychology",
+        description: "กระบวนการเข้ารหัส จัดเก็บ และเรียกคืนข้อมูล"
+      },
+      {
+        id: "synapse",
+        name: "ไซแนปส์",
+        group: "Biology",
+        description: "บริเวณเชื่อมต่อเพื่อส่งสัญญาณระหว่างเซลล์"
+      },
+      {
+        id: "learning",
+        name: "การเรียนรู้",
+        group: "Psychology",
+        description: "กระบวนการเปลี่ยนแปลงความรู้และพฤติกรรม"
+      }
+    ],
+
+    links: [
+      { source: "brain", target: "neuron" },
+      { source: "neuron", target: "synapse" },
+      { source: "synapse", target: "memory" },
+      { source: "memory", target: "learning" },
+      { source: "brain", target: "memory" }
+    ]
+  };
+
+  const Graph = ForceGraph3D()
+    (document.getElementById("graph"))
+    .graphData(data)
+    .backgroundColor("#080808")
+    .nodeLabel("name")
+    .nodeAutoColorBy("group")
+    .nodeVal(5)
+    .linkColor(() => "#8e2929")
+    .linkWidth(1.5)
+    .onNodeClick(node => {
+      document.getElementById("title").textContent =
+        node.name;
+
+      document.getElementById("description").textContent =
+        node.description;
+    });
+
+  Graph.d3Force("charge").strength(-100);
+</script>
+
+</body>
+</html>
