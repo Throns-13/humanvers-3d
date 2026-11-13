@@ -77,6 +77,28 @@
     }
   ],
   "links": [
+    
+{
+  "source": "brain",
+  "target": "hippocampus",
+  "relation": "มีโครงสร้างเป็นส่วนหนึ่ง"
+},
+{
+  "source": "hippocampus",
+  "target": "memory",
+  "relation": "มีบทบาทในการสร้างความทรงจำ"
+},
+{
+  "source": "memory",
+  "target": "memory_consolidation",
+  "relation": "ผ่านกระบวนการ"
+},
+{
+  "source": "hippocampus",
+  "target": "memory_consolidation",
+  "relation": "มีส่วนเกี่ยวข้องกับ"
+}
+
     {
       "source": "brain",
       "target": "neuron",
