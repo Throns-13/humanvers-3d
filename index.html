@@ -9,7 +9,9 @@
   <script src="https://cdn.jsdelivr.net/npm/3d-force-graph"></script>
 
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
@@ -22,13 +24,15 @@
     header {
       position: absolute;
       z-index: 2;
-      top: 20px;
+      top: 15px;
       left: 25px;
+      pointer-events: none;
     }
 
     h1 {
       color: #ff3030;
       letter-spacing: 3px;
+      margin-bottom: 5px;
     }
 
     #graph {
@@ -36,20 +40,117 @@
       height: 100vh;
     }
 
-    #info {
-      position: absolute;
-      z-index: 2;
-      right: 20px;
-      bottom: 20px;
-      width: 270px;
-      padding: 18px;
-      background: rgba(20, 10, 10, 0.92);
-      border: 1px solid #9e2525;
-      border-radius: 12px;
+    /* OVERLAY BACKGROUND */
+    #overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
     }
 
-    #info h2 { color: #ff4545; }
-    #info p { line-height: 1.6; }
+    #overlay.active {
+      display: flex;
+    }
+
+    /* INFORMATION PANEL */
+    .panel {
+      width: 100%;
+      max-width: 750px;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 28px;
+      background: #111;
+      border: 1px solid #8e2929;
+      border-radius: 16px;
+      box-shadow: 0 0 40px rgba(180, 20, 20, 0.2);
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 15px;
+    }
+
+    .panel h2 {
+      color: #ff4545;
+      font-size: 28px;
+      margin: 0;
+    }
+
+    .category {
+      color: #aaa;
+      font-size: 12px;
+      margin-top: 8px;
+      letter-spacing: 2px;
+    }
+
+    #closeBtn {
+      background: #401515;
+      border: 1px solid #a32b2b;
+      color: white;
+      border-radius: 8px;
+      padding: 9px 14px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    #closeBtn:hover {
+      background: #8e2929;
+    }
+
+    .section {
+      margin-top: 25px;
+      padding-top: 15px;
+      border-top: 1px solid #332020;
+    }
+
+    .section h3 {
+      color: #ff5555;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .section p,
+    .section li {
+      color: #ddd;
+      line-height: 1.8;
+      font-size: 14px;
+    }
+
+    .section ul {
+      padding-left: 22px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      background: #301414;
+      border: 1px solid #743030;
+      color: #ffbaba;
+      padding: 6px 11px;
+      border-radius: 20px;
+      font-size: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .panel {
+        padding: 18px;
+      }
+
+      .panel h2 {
+        font-size: 22px;
+      }
+    }
   </style>
 </head>
 
@@ -62,27 +163,158 @@
 
 <div id="graph"></div>
 
-<div id="info">
-  <h2 id="title">Knowledge Node</h2>
-  <p id="description">
-    คลิกจุดความรู้เพื่อดูรายละเอียด
-  </p>
+<!-- OVERLAY -->
+<div id="overlay">
+  <div class="panel">
+
+    <div class="panel-header">
+      <div>
+        <h2 id="nodeTitle">Knowledge</h2>
+        <div class="category" id="nodeCategory">
+          KNOWLEDGE CATEGORY
+        </div>
+      </div>
+
+      <button id="closeBtn">✕</button>
+    </div>
+
+    <div id="deepContent"></div>
+
+  </div>
 </div>
 
 <script>
 
 async function startGraph() {
 
-  // โหลดฐานข้อมูลความรู้
+  // LOAD KNOWLEDGE DATABASE
   const response = await fetch("./data/knowledge.json");
 
   if (!response.ok) {
-    throw new Error("ไม่สามารถโหลดฐานข้อมูลได้");
+    throw new Error("Cannot load knowledge database");
   }
 
   const data = await response.json();
 
-  // สร้าง 3D Graph
+  // OVERLAY ELEMENTS
+  const overlay = document.getElementById("overlay");
+  const content = document.getElementById("deepContent");
+
+  // CREATE INFORMATION SECTION
+  function addSection(title, value) {
+
+    if (
+      value === undefined ||
+      value === null ||
+      value === ""
+    ) return;
+
+    const section = document.createElement("section");
+    section.className = "section";
+
+    const heading = document.createElement("h3");
+    heading.textContent = title;
+
+    section.appendChild(heading);
+
+    if (Array.isArray(value)) {
+
+      const list = document.createElement("ul");
+
+      value.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        list.appendChild(li);
+      });
+
+      section.appendChild(list);
+
+    } else {
+
+      const paragraph = document.createElement("p");
+      paragraph.textContent = value;
+      section.appendChild(paragraph);
+
+    }
+
+    content.appendChild(section);
+  }
+
+  // OPEN OVERLAY
+  function openOverlay(node) {
+
+    const deep = node.deepData || {};
+
+    document.getElementById("nodeTitle").textContent =
+      node.name || "Unknown";
+
+    document.getElementById("nodeCategory").textContent =
+      node.category || node.group || "KNOWLEDGE";
+
+    content.replaceChildren();
+
+    addSection(
+      "OVERVIEW",
+      deep.overview || node.details || node.description
+    );
+
+    addSection("ANATOMY", deep.anatomy);
+    addSection("FUNCTIONS", deep.functions);
+    addSection("MECHANISMS", deep.mechanisms);
+    addSection("RELATED CONCEPTS", deep.relatedConcepts);
+    addSection("REFERENCES", deep.references);
+
+    // TAGS
+    if (node.tags && node.tags.length) {
+
+      const section = document.createElement("section");
+      section.className = "section";
+
+      const heading = document.createElement("h3");
+      heading.textContent = "TAGS";
+
+      const tags = document.createElement("div");
+      tags.className = "tags";
+
+      node.tags.forEach(tag => {
+
+        const span = document.createElement("span");
+        span.className = "tag";
+        span.textContent = tag;
+
+        tags.appendChild(span);
+
+      });
+
+      section.appendChild(heading);
+      section.appendChild(tags);
+      content.appendChild(section);
+    }
+
+    overlay.classList.add("active");
+  }
+
+  // CLOSE OVERLAY
+  function closeOverlay() {
+    overlay.classList.remove("active");
+  }
+
+  document.getElementById("closeBtn")
+    .addEventListener("click", closeOverlay);
+
+  overlay.addEventListener("click", event => {
+    if (event.target === overlay) {
+      closeOverlay();
+    }
+  });
+
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape") {
+      closeOverlay();
+    }
+  });
+
+  // CREATE 3D GRAPH
   const Graph = ForceGraph3D()
     (document.getElementById("graph"))
 
@@ -95,32 +327,27 @@ async function startGraph() {
     .linkColor(() => "#8e2929")
     .linkWidth(1.5)
 
-    // คลิก Node เพื่ออ่านข้อมูล
     .onNodeClick(node => {
-
-      document.getElementById("title")
-        .textContent = node.name;
-
-      document.getElementById("description")
-        .textContent =
-        node.details || node.description;
-
+      openOverlay(node);
     });
 
   Graph.d3Force("charge").strength(-100);
 }
 
-// เริ่มต้นระบบ
+// START SYSTEM
 startGraph().catch(error => {
+
   console.error(error);
 
-  document.getElementById("title").textContent =
-    "เกิดข้อผิดพลาด";
+  document.getElementById("nodeTitle").textContent =
+    "SYSTEM ERROR";
 
-  document.getElementById("description").textContent =
+  document.getElementById("deepContent").textContent =
     error.message;
-});
 
+  document.getElementById("overlay").classList.add("active");
+
+});
 
 </script>
 
